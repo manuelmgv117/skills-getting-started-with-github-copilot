@@ -24,7 +24,7 @@ app.mount(
     name="static"
 )
 
-# In-memory activity database
+# In-memory data store for activities
 activities = {
     "Chess Club": {
         "description": "Learn strategies and compete in chess tournaments",
@@ -43,8 +43,48 @@ activities = {
         "schedule": "Mondays, Wednesdays, Fridays, 2:00 PM - 3:00 PM",
         "max_participants": 30,
         "participants": ["john@mergington.edu", "olivia@mergington.edu"]
+    },
+    # 🏀 Sports-related
+    "Soccer Team": {
+        "description": "Train and compete in local soccer tournaments",
+        "schedule": "Tuesdays and Thursdays, 4:00 PM - 5:30 PM",
+        "max_participants": 22,
+        "participants": []
+    },
+    "Basketball Club": {
+        "description": "Develop basketball skills and teamwork",
+        "schedule": "Mondays and Wednesdays, 3:00 PM - 4:30 PM",
+        "max_participants": 15,
+        "participants": []
+    },
+    # 🎨 Artistic
+    "Art Workshop": {
+        "description": "Painting, drawing and creative art sessions",
+        "schedule": "Fridays, 2:30 PM - 4:00 PM",
+        "max_participants": 18,
+        "participants": []
+    },
+    "Music Band": {
+        "description": "Practice and perform as part of the school band",
+        "schedule": "Mondays and Thursdays, 3:30 PM - 5:00 PM",
+        "max_participants": 20,
+        "participants": []
+    },
+    # 🧠 Intellectual
+    "Science Club": {
+        "description": "Conduct experiments and explore scientific concepts",
+        "schedule": "Wednesdays, 3:00 PM - 4:30 PM",
+        "max_participants": 15,
+        "participants": []
+    },
+    "Debate Team": {
+        "description": "Develop argumentation and public speaking skills",
+        "schedule": "Thursdays, 3:00 PM - 4:30 PM",
+        "max_participants": 10,
+        "participants": []
     }
 }
+
 
 
 @app.get("/")
