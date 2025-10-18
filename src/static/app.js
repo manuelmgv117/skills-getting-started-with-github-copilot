@@ -67,7 +67,52 @@ document.addEventListener("DOMContentLoaded", () => {
         const ul = document.createElement("ul");
         activity.participants.forEach(email => {
           const li = document.createElement("li");
-          li.textContent = email;
+          li.className = "participant-item";
+
+          const span = document.createElement("span");
+          span.className = "participant-email";
+          span.textContent = email;
+
+          // Delete button (trash icon)
+          const btn = document.createElement("button");
+          btn.className = "participant-remove";
+          btn.setAttribute("aria-label", `Remove ${email} from ${name}`);
+          btn.title = `Remove ${email}`;
+          btn.innerHTML = `
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M3 6h18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M8 6v12a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2V6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M10 11v6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M14 11v6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          `;
+
+          // Click handler to remove participant
+          btn.addEventListener("click", async (e) => {
+            e.stopPropagation();
+            if (!confirm(`Remove ${email} from ${name}?`)) return;
+
+            try {
+              const url = `/activities/${encodeURIComponent(name)}/participants?email=${encodeURIComponent(email)}`;
+              const res = await fetch(url, { method: "DELETE" });
+              const data = await res.json().catch(() => ({}));
+
+              if (!res.ok) {
+                const detail = (data && data.detail) ? data.detail : 'Failed to remove participant';
+                setMessage(detail, false);
+              } else {
+                setMessage(data.message || 'Participant removed', true);
+                // Refresh activities to update UI
+                await fetchActivities();
+              }
+            } catch (err) {
+              setMessage('Network error. Please try again.', false);
+            }
+          });
+
+          li.appendChild(span);
+          li.appendChild(btn);
           ul.appendChild(li);
         });
         participantsSection.appendChild(ul);
